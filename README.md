@@ -18,3 +18,25 @@ I use the system identity from the device itself for the device name. The device
 
 ![grafik](https://github.com/Stiles96/MikrotikBackupScript/assets/51234422/fc2efd0e-99ef-455b-8bcc-1aaef22de567)
 
+## Delete old files
+The script automatically delete old backup files. Default is 14 days old files. You can chnage it in the script:
+```powershell
+$Ordner = Get-ChildItem -Path $ExportPath;
+foreach ($Datei in $Ordner)
+{
+    # Change it here
+    if ($Datei.CreationTime -lt $(Get-Date).AddDays(-14))
+    {
+		Write-Host "Remove $($Datei.FullName)";
+        Remove-Item $Datei.FullName -Recurse -Force;
+    }
+}
+```
+
+## Run the scipt
+You need to download plink.exe (https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) and store it in the same directory.
+
+Change the path to your environment.
+```batch
+powershell.exe -file ".\Backup.sh"
+```
